@@ -2,10 +2,25 @@
 session_start();
 include 'includes/db.php';
 
-if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+//------------------------------------------------------//
+//--------Controleer of de gebruiker is ingelogd--------//
+//------------------------------------------------------//
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("location: index.php");
     exit;
 }
+//------------------------------------------------------//
+//----------Controleer of de gebruiker admin is---------//
+//------------------------------------------------------//
+
+if ($_SESSION['user']['isAdmin'] !== 1) {
+    header("location: dashboard.php");
+    exit;
+}
+//------------------------------------------------------//
+//------------------------------------------------------//
+//------------------------------------------------------//
+
 
 // show users
 
