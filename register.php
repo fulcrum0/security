@@ -5,14 +5,21 @@ include 'includes/db.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
+    // Making password hashing more secure
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // --------------------------------------
     $passwordcheck = $_POST['passwordcheck'];
 
     if ($password == $passwordcheck) {
         $stmt = $pdo->prepare("SELECT * FROM user WHERE username = ?");
         $stmt->execute([$username]);
         if ($stmt->rowCount() == 0) {
+            // Prepare a safe SQL to add the user
             $stmt = $pdo->prepare("INSERT INTO user (username, password, balance, isAdmin) VALUES (?, ?, 100, 0)");
-            $stmt->execute([$username, $password]);
+            // ----------------------------------
+            // Change of variable ($password -> $hashedPassword)
+            $stmt->execute([$username, $hashedPassword]);
+            // ----------------------------------
             $success = "Je account is aangemaakt, je kunt nu inloggen";
         } else {
             $error = "Deze gebruikersnaam is al in gebruik";
