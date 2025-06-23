@@ -7,7 +7,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 
-$id = $_GET['id'];
+// Get the user ID from the session
+$id = $_SESSION['user']['id'];
 
 // Gebruikersgegevens ophalen
 $stmt = $pdo->prepare("SELECT * FROM user WHERE id = ?");
@@ -46,11 +47,11 @@ $incomingTransactions = $stmt->fetchAll();
             <p class="text-center mb-6">Saldo: €<?= number_format($user['balance'], 2, ',', '.') ?></p>
             <div class="flex justify-center">
                 <a href="dashboard.php"
-                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Geld overmaken</a>
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Geld overmaken</a>
             </div>
             <div class="flex justify-center mt-6">
                 <a href="logout.php"
-                   class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Uitloggen</a>
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Uitloggen</a>
             </div>
         </div>
         <div class="col-span-1">
